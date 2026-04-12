@@ -17,17 +17,9 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Products like Spotify or TikTok usually combine several ideas at once. They look at what you already played or skipped, what people with overlapping taste stream, and what is rising in popularity. Many layers also use **content**: audio analysis, genre tags, mood labels, or embeddings learned from sound and text. Context matters too (workout vs wind-down), and the final feed is often a ranked list after business rules, diversity goals, and experiments on millions of users. Training and scoring run on huge pipelines, so the exact blend is opaque to the listener even when the UI shows a simple “Because you liked …” line.
 
-Some prompts to answer:
-
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
-
-You can include a simple diagram or bullet list if helpful.
+This simulation narrows all of that to one transparent path. Songs live in `data/songs.csv` with **genre**, **mood**, and five numeric traits (**energy**, **tempo** scaled across the catalog so it matches the scale of the other fields, **valence**, **danceability**, **acousticness**). A **user profile** summarizes liked songs in the same form, typically a mean “vibe” vector plus which genres and moods count as a match. The **recommender** scores every candidate with **cosine similarity** between the user vector and each song’s five-number vector, then adds weighted **genre and mood** bonuses so style and intent matter alongside pure numbers. Results are ranked by that final score using vanilla Python only (no ML libraries). Weights, tie-breaks, and formulas are spelled out in `plan.md`.
 
 ---
 
