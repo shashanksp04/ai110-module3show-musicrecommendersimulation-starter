@@ -19,7 +19,27 @@ Replace this paragraph with your own summary of what your version does.
 
 Products like Spotify or TikTok usually combine several ideas at once. They look at what you already played or skipped, what people with overlapping taste stream, and what is rising in popularity. Many layers also use **content**: audio analysis, genre tags, mood labels, or embeddings learned from sound and text. Context matters too (workout vs wind-down), and the final feed is often a ranked list after business rules, diversity goals, and experiments on millions of users. Training and scoring run on huge pipelines, so the exact blend is opaque to the listener even when the UI shows a simple “Because you liked …” line.
 
-This simulation narrows all of that to one transparent path. Songs live in `data/songs.csv` with **genre**, **mood**, and five numeric traits (**energy**, **tempo** scaled across the catalog so it matches the scale of the other fields, **valence**, **danceability**, **acousticness**). A **user profile** summarizes liked songs in the same form, typically a mean “vibe” vector plus which genres and moods count as a match. The **recommender** scores every candidate with **cosine similarity** between the user vector and each song’s five-number vector, then adds weighted **genre and mood** bonuses so style and intent matter alongside pure numbers. Results are ranked by that final score using vanilla Python only (no ML libraries). Weights, tie-breaks, and formulas are spelled out in `plan.md`.
+This simulation keeps one clear pipeline from user preferences to a ranked list. Songs come from `data/songs.csv` with **genre**, **mood**, and numeric traits (**energy**, **tempo** as BPM, **valence**, **danceability**, **acousticness**). Everything runs in vanilla Python with no ML libraries. Full scoring weights, tie-break rules, data flow, and an example profile dict are in `plan.md`.
+
+### Algorithm
+
+1. **Prepare the catalog:** Load all rows and compute **BPM min and max** so every song (and the user) uses the same min–max scaling for the second dimension of the vibe vector. Component order is fixed: energy, scaled tempo, valence, danceability, acousticness.
+2. **Build the user vector** from the profile dict and **normalize** the profile’s genre and mood strings (for example strip and case-insensitive comparison).
+3. **For each song:** Build its 5D vector, compute **cosine similarity** between the user vector and the song vector to get a numeric match, set **genre_match** and **mood_match** to 1 when labels match the profile and 0 otherwise, then combine into a **weighted score** (numeric match plus bonuses; optional artist bonus if you implement it).
+4. **Output:** Sort by score, apply **tie-breaks** (for example higher cosine, then genre match, then id), return the **top K** recommendations.
+
+### User inputs required
+
+The user supplies a **single dictionary** (or the same fields through a form or CLI). **Required:** `energy`, `valence`, `danceability`, and `acousticness` as decimals (roughly 0 to 1); **`tempo_bpm`** as beats per minute; **`genre`** and **`mood`** as **one string each**. **Optional:** `top_k` (how many results; default if omitted), and **`artist`** if you add a same-artist bonus. The system does not ask for catalog song IDs; taste is whatever numbers and labels the user enters.
+
+### Biases and blind spots
+
+- **Catalog bias:** Only songs in `songs.csv` can appear. Genres, moods, artists, and numeric ranges reflect whoever built that file, not the whole world of music.
+- **Label bias:** Genre and mood are coarse strings. An exact match rule ignores near neighbors (for example “indie pop” vs “pop”) and favors whatever wording appears in the data.
+- **Feature bias:** Five numbers plus two tags are a cartoon of real listening. They can track vibe roughly but miss lyrics, culture, era, social context, and intent that real users care about.
+- **Weighting bias:** The relative weights on cosine vs genre vs mood encode a value judgment (for example “vibe first, labels second”). Different weights would reorder results with no single objectively correct choice.
+- **User input bias:** Self-entered sliders and BPM can be inconsistent or unlike any real track; the system still scores faithfully against that input, which may not match how the user actually listens.
+- **No diversity rule:** Top K by score can return a cluster of very similar rows unless you add extra rules later.
 
 ---
 
