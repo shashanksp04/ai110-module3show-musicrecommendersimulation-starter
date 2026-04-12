@@ -1,0 +1,20 @@
+Loading songs from data/songs.csv...
+Loaded 21 songs
+
+Top recommendations:
+
+Moonlight Sonata Redux - Score: 0.86
+Because: Numeric vibe match (cosine-based similarity): 0.77 on a 0-1 scale. Genre matches your preference (classical). Mood matches your intent (serene). Features: energy 0.22, valence 0.55, danceability 0.28, acousticness 0.95.
+
+Pulse District - Score: 0.60
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.89, valence 0.88, danceability 0.92, acousticness 0.12.
+
+Gym Hero - Score: 0.60
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.93, valence 0.77, danceability 0.88, acousticness 0.05.
+
+Sunrise City - Score: 0.60
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.82, valence 0.84, danceability 0.79, acousticness 0.18.
+
+I Ain't Worried - Score: 0.60
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.85, valence 0.92, danceability 0.82, acousticness 0.15.
+

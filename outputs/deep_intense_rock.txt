@@ -1,0 +1,20 @@
+Loading songs from data/songs.csv...
+Loaded 21 songs
+
+Top recommendations:
+
+Storm Runner - Score: 1.00
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre matches your preference (rock). Mood matches your intent (intense). Features: energy 0.91, valence 0.48, danceability 0.66, acousticness 0.10.
+
+Gym Hero - Score: 0.74
+Because: Numeric vibe match (cosine-based similarity): 0.98 on a 0-1 scale. Genre differs from your preference. Mood matches your intent (intense). Features: energy 0.93, valence 0.77, danceability 0.88, acousticness 0.05.
+
+Safety Pin Heart - Score: 0.60
+Because: Numeric vibe match (cosine-based similarity): 0.99 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.84, valence 0.55, danceability 0.58, acousticness 0.15.
+
+Iron Foundry - Score: 0.59
+Because: Numeric vibe match (cosine-based similarity): 0.99 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.96, valence 0.35, danceability 0.42, acousticness 0.02.
+
+Night Drive Loop - Score: 0.59
+Because: Numeric vibe match (cosine-based similarity): 0.98 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.75, valence 0.49, danceability 0.73, acousticness 0.22.
+

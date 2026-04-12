@@ -88,17 +88,9 @@ Use this section to document the experiments you ran. For example:
 
 ---
 
-## Limitations and Risks
+## Limitations and Bias
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+Experiments with saved runs (for example chill lofi, deep intense rock, the “pop” vs indie-pop profile, and classical/serene labels paired with club-like numeric sliders) surfaced one clear weakness: **the hybrid score treats genre and mood as all-or-nothing string equality with sizable bonuses**, while numeric similarity is a blended cosine over five features. That design **pushes users toward whatever wording appears in the catalog**—near neighbors such as “indie pop” vs “pop” or “relaxed” vs “chill” get **no partial credit**, so cross-genre but similar-vibe tracks can sink even when their features line up well. When labels and numbers disagree, **the label side can still win**: a matching classical/serene row outranked high-energy dance songs for the contradictory profile, so self-reported tags can **dominate felt vibe** under the current weights. **Energy is not modeled as its own gap** (it is just one cosine dimension among tempo, valence, danceability, and acousticness), so “how intense” never gets extra emphasis beyond that shared vector. Together, behavior resembles a **taxonomy-weighted filter bubble** more than a continuous similarity space across musical taste.
 
 ---
 

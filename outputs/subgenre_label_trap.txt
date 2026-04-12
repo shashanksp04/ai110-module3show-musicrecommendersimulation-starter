@@ -1,0 +1,20 @@
+Loading songs from data/songs.csv...
+Loaded 21 songs
+
+Top recommendations:
+
+Sunrise City - Score: 1.00
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre matches your preference (pop). Mood matches your intent (happy). Features: energy 0.82, valence 0.84, danceability 0.79, acousticness 0.18.
+
+I Ain't Worried - Score: 1.00
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre matches your preference (pop). Mood matches your intent (happy). Features: energy 0.85, valence 0.92, danceability 0.82, acousticness 0.15.
+
+Gym Hero - Score: 0.84
+Because: Numeric vibe match (cosine-based similarity): 0.99 on a 0-1 scale. Genre matches your preference (pop). Mood differs from your preference. Features: energy 0.93, valence 0.77, danceability 0.88, acousticness 0.05.
+
+Rooftop Lights - Score: 0.75
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre differs from your preference. Mood matches your intent (happy). Features: energy 0.76, valence 0.81, danceability 0.82, acousticness 0.35.
+
+Velvet Hours - Score: 0.60
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.48, valence 0.62, danceability 0.68, acousticness 0.25.
+

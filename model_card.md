@@ -74,16 +74,9 @@ Prompts:
 
 ## 7. Evaluation  
 
-How you checked whether the recommender behaved as expected. 
+We checked behavior by running `python -m src.main` with the taste and stress-test profiles defined in `src/main.py`, saving representative console output under `outputs/` (`chill_lofi.txt`, `deep_intense_rock.txt`, `subgenre_label_trap.txt`, `contradic_genre_vibe.txt`) and comparing top‑5 lists side by side. The profiles we exercised were: **High‑Energy Pop** (bright pop/happy, high tempo and danceability); **Chill Lofi** (low energy, slow tempo, high acousticness, lofi/chill labels); **Deep Intense Rock** (high energy, faster tempo, lower valence, rock/intense labels); **Subgenre label trap** (still pop/happy but tuned so “indie pop” competes without an exact genre string match); and **Contradictory genre vs vibe** (classical/serene labels paired with club‑like numerics).
 
-Prompts:  
-
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
-
-No need for numeric metrics unless you created some.
+We looked for whether tops matched the **declared genre and mood** when both aligned with the catalog, whether **numeric vectors** pulled rankings toward the expected energy and acoustic “shape,” and whether **edge cases** exposed rigid rules (exact label match only, hybrid weights). What surprised us: **Chill Lofi** correctly flooded the top with lofi+chill rows, but **similarly soft jazz and ambient** tracks sat lower mostly because the **genre/mood bonuses never fired**, not because cosine hated them—so the list felt “right” for the label yet **narrow** for vibe. **Deep Intense Rock** put the only true **rock+intense** song first, but **metal** (high energy, low valence) ranked below **intense pop**, showing how **taxonomy wording** can outweigh a listener’s mental map of “heavy.” **Subgenre label trap** kept **Rooftop Lights** below true **pop** rows even with a strong happy/numeric fit—expected given exact genre equality, still stark in practice. Most striking was **Contradictory genre vs vibe**: **Moonlight Sonata Redux** won despite a **much weaker cosine** than house and pop hits, because **full genre and mood bonuses** outweighed the numeric profile—proof the hybrid can **override** the sliders when labels match. We did not rely on a separate accuracy metric; evaluation was **qualitative comparison across profiles** and the pairwise notes in `reflection.md`.
 
 ---
 

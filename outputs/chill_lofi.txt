@@ -1,0 +1,20 @@
+Loading songs from data/songs.csv...
+Loaded 21 songs
+
+Top recommendations:
+
+Library Rain - Score: 1.00
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre matches your preference (lofi). Mood matches your intent (chill). Features: energy 0.35, valence 0.60, danceability 0.58, acousticness 0.86.
+
+Midnight Coding - Score: 1.00
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre matches your preference (lofi). Mood matches your intent (chill). Features: energy 0.42, valence 0.56, danceability 0.62, acousticness 0.71.
+
+Focus Flow - Score: 0.85
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre matches your preference (lofi). Mood differs from your preference. Features: energy 0.40, valence 0.59, danceability 0.60, acousticness 0.78.
+
+Spacewalk Thoughts - Score: 0.74
+Because: Numeric vibe match (cosine-based similarity): 0.99 on a 0-1 scale. Genre differs from your preference. Mood matches your intent (chill). Features: energy 0.28, valence 0.65, danceability 0.41, acousticness 0.92.
+
+Coffee Shop Stories - Score: 0.60
+Because: Numeric vibe match (cosine-based similarity): 1.00 on a 0-1 scale. Genre differs from your preference. Mood differs from your preference. Features: energy 0.37, valence 0.71, danceability 0.54, acousticness 0.89.
+
