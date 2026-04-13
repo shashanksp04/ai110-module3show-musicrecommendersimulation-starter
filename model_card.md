@@ -2,103 +2,59 @@
 
 ## 1. Model Name  
 
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
+VibeMixer 0.1, my tiny hybrid recommender that ranks songs from a classroom CSV using both numeric “vibe” and text labels.
 
 ---
 
 ## 2. Intended Use  
 
-Describe what your recommender is designed to do and who it is for. 
+My recommender suggests a top 5 list from a fixed catalog. Each pick comes with a score and a short “because” explanation. I assume I can describe taste with genre, mood, five sliders (energy, valence, danceability, acousticness, tempo), and an optional favorite artist. My model does not learn from past listens. I built it for classroom demos and exploration, not for real customers.
 
-Prompts:  
-
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
+I would not use it for a real streaming product, wellness or therapy advice, fairness audits, copyright decisions, or anything that needs a large, representative music library.
 
 ---
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
-
-Prompts:  
-
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
-
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+I give each song and the user a five number profile: energy, tempo (I stretch BPM to 0 to 1 using the lowest and highest BPM in the catalog), valence, danceability, and acousticness. I compare the user vector to each song vector with cosine similarity. I turn that similarity into a 0 to 1 score. I add separate bonuses if my genre, mood, or artist string exactly matches the song’s (after I normalize case and spaces). The numeric part counts the most. Then I add the genre part, then mood, then a small artist part. Compared to a naive starter, I added this hybrid mix, catalog based tempo scaling, and an optional artist bump so my explanations stay readable.
 
 ---
 
 ## 4. Data  
 
-Describe the dataset the model uses.  
-
-Prompts:  
-
-- How many songs are in the catalog  
-- What genres or moods are represented  
-- Did you add or remove data  
-- Are there parts of musical taste missing in the dataset  
+My catalog is 21 songs in `data/songs.csv`. Each row has id, title, artist, genre, mood, energy, tempo in BPM, valence, danceability, and acousticness. I have no audio files and no user listening history. Genres include pop, lofi, rock, ambient, jazz, synthwave, indie pop, hip hop, country, classical, metal, reggae, folk, R&B, house, blues, and punk. Moods include happy, chill, intense, relaxed, and several others. Most genres only appear once, so my set is not balanced and cannot stand in for “all music.”
 
 ---
 
 ## 5. Strengths  
 
-Where does your system seem to work well  
-
-Prompts:  
-
-- User types for which it gives reasonable results  
-- Any patterns you think your scoring captures correctly  
-- Cases where the recommendations matched your intuition  
+- When labels and sliders both point at rows that exist in my CSV, my top five often match my intuition (e.g. lofi/chill vs high energy pop).  
+- My numeric blend picks up energy, dance, and acoustic shape well enough for class experiments.  
+- My explanations name matches and feature levels, which makes it easy for me to see why something ranked high or low.  
+- My stress profiles in `main.py` produce clearly different top fives, so what I built is easy to demo.
 
 ---
 
-## 6. Limitations and Bias 
+## 6. Limitations and Bias  
 
-Where the system struggles or behaves unfairly. 
-
-Prompts:  
-
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
+In my scorer, genre and mood bonuses need a full string match. “Indie pop” does not count as “pop,” so subgenres and synonyms lose easy points. My catalog is tiny, so diversity is weak and some tastes have almost no close examples. If my words and my sliders disagree, label bonuses can still win over cosine (e.g. classical/serene labels with party like numbers). Similar chill tracks in other genres (jazz, ambient) may sit lower than strict lofi/chill rows because the bonus never fires, even when the numbers are close. That can feel narrow or unfair to me when I care about vibe more than tags.
 
 ---
 
 ## 7. Evaluation  
 
-We checked behavior by running `python -m src.main` with the taste and stress-test profiles defined in `src/main.py`, saving representative console output under `outputs/` (`chill_lofi.txt`, `deep_intense_rock.txt`, `subgenre_label_trap.txt`, `contradic_genre_vibe.txt`) and comparing top‑5 lists side by side. The profiles we exercised were: **High‑Energy Pop** (bright pop/happy, high tempo and danceability); **Chill Lofi** (low energy, slow tempo, high acousticness, lofi/chill labels); **Deep Intense Rock** (high energy, faster tempo, lower valence, rock/intense labels); **Subgenre label trap** (still pop/happy but tuned so “indie pop” competes without an exact genre string match); and **Contradictory genre vs vibe** (classical/serene labels paired with club‑like numerics).
-
-We looked for whether tops matched the **declared genre and mood** when both aligned with the catalog, whether **numeric vectors** pulled rankings toward the expected energy and acoustic “shape,” and whether **edge cases** exposed rigid rules (exact label match only, hybrid weights). What surprised us: **Chill Lofi** correctly flooded the top with lofi+chill rows, but **similarly soft jazz and ambient** tracks sat lower mostly because the **genre/mood bonuses never fired**, not because cosine hated them—so the list felt “right” for the label yet **narrow** for vibe. **Deep Intense Rock** put the only true **rock+intense** song first, but **metal** (high energy, low valence) ranked below **intense pop**, showing how **taxonomy wording** can outweigh a listener’s mental map of “heavy.” **Subgenre label trap** kept **Rooftop Lights** below true **pop** rows even with a strong happy/numeric fit—expected given exact genre equality, still stark in practice. Most striking was **Contradictory genre vs vibe**: **Moonlight Sonata Redux** won despite a **much weaker cosine** than house and pop hits, because **full genre and mood bonuses** outweighed the numeric profile—proof the hybrid can **override** the sliders when labels match. We did not rely on a separate accuracy metric; evaluation was **qualitative comparison across profiles** and the pairwise notes in `reflection.md`.
+I ran `python -m src.main` and switched the `user_prefs` block in `src/main.py` for each profile. I saved sample console output under `outputs/` (`chill_lofi.txt`, `deep_intense_rock.txt`, `subgenre_label_trap.txt`, `contradic_genre_vibe.txt`) and compared top 5 lists side by side. My profiles included High Energy Pop, Chill Lofi, Deep Intense Rock, Subgenre label trap (I say “pop” so “indie pop” gets no genre bonus), and Contradictory genre vs vibe (classical/serene labels with club like sliders). I checked whether lists matched declared genre and mood when the catalog had matches, whether numeric shape pulled rankings the right way, and whether edge cases showed rigid exact match rules. Chill Lofi favored lofi/chill rows but left soft jazz/ambient lower when labels differed. Deep Intense Rock put true rock/intense first, but metal could sit under intense pop because wording on mood or genre matters. Subgenre trap kept true pop above Rooftop Lights (indie pop). Contradictory put Moonlight Sonata Redux first despite weaker cosine than dance tracks, because both label bonuses applied. I also ran `pytest` on the small tests in `tests/test_recommender.py`. I did not use a separate accuracy metric; my evaluation was qualitative, with extra notes in `reflection.md`.
 
 ---
 
 ## 8. Future Work  
 
-Ideas for how you would improve the model next.  
-
-Prompts:  
-
-- Additional features or preferences  
-- Better ways to explain recommendations  
-- Improving diversity among the top results  
-- Handling more complex user tastes  
+- I would add fuzzy or hierarchical genre matching (treat “indie pop” as related to “pop”).  
+- I would add a diversity rule so my top five are not five near duplicates on vibe.  
+- I would try history or “don’t play this artist again” once I have more than one row per niche.
 
 ---
 
 ## 9. Personal Reflection  
 
-A few sentences about your experience.  
-
-Prompts:  
-
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+I learned that a recommender is not one magic score, it is rules I choose (here, cosine plus label bonuses) and those rules have visible tradeoffs. The surprising part was seeing labels beat sliders when they conflicted; it made “hybrid” feel real instead of abstract. Comparing profiles side by side showed me how small catalogs and exact tags create filter bubble lists even when other songs are numerically close. I will look at real apps and wonder what is in the vector, what is in the text match, and what never made it into the data.
